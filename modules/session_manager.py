@@ -22,7 +22,6 @@ def validate_get_user():
         if "role" not in st.session_state:
             email = st.user.email
             if load_user(email):
-                print('user loaded correctly')
                 return True
             else:
                 st.error("Tu cuenta de Google no está autorizada.")

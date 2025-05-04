@@ -5,7 +5,7 @@ pedidosSheet="18JWlO4eq1CXAffEgz6_3KbodPvGhYK-u4Q01fz9BV5U"
 pedidoTable="pedidos"
 detallePedidoTable="detallePedido"
 productoTable="producto"
-title = "Tuqui"
+title = "Tuqui - Listo para Disfrutar"
 #branding colors 
 aquamarine="#3AA597"
 amarillo="#FECA1D"
@@ -18,5 +18,5 @@ verde="#08af64"
 rojo="#d62828"
 
 
-page_icon="./images/favico.ico"
+page_icon="./images/favicon.ico"
 companyIcon="./images/tuqui-gif.gif"

@@ -17,6 +17,7 @@ def make_sidebar():
         unsafe_allow_html=True
     )
         st.title("Menu")
+        st.write(f"Hola {st.session_state.username}!")
         st.write("")
         st.write("")
 
