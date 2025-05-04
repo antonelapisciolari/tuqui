@@ -1,0 +1,12 @@
+streamlit>=1.42.0
+Authlib>=1.3.2
+supabase
+python-dotenv
+streamlit-oauth
+streamlit_calendar
+st-gsheets-connection
+google-auth
+google-auth-httplib2 
+google-api-python-client
+fpdf
+plotly
