@@ -1,0 +1,7 @@
+clientesTable="clientes"
+productoTable = "producto"
+ventasTable = "ventas"
+detalleVentaTable = "detalleVenta"
+formaPagoTabla = "formaPago"
+pedidosTable="pedidos"
+detallePedidoTable = "detallePedido"

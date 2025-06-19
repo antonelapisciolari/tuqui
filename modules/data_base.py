@@ -2,14 +2,13 @@ import streamlit as st
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import os
-
+import modules.tables as db
 load_dotenv()
 
 url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 
 supabase: Client = create_client(url, key)
-
 def get(tableName):
     response = supabase.table(tableName).select('*').execute()
     return response.data
@@ -22,7 +21,7 @@ def add(tableName, data):
     return response
 
 def updateEstadoPedido(pedidoId, nuevo_estado):
-    return supabase.table('pedidos').update({"estado": nuevo_estado}).eq("id", pedidoId).execute()
+    return supabase.table(db.pedidosTable).update({"estado": nuevo_estado}).eq("id", pedidoId).execute()
 
 def saveAuthToken(data):
     return supabase.table('auth_tokens').insert(data).execute()

@@ -13,7 +13,7 @@ if st.session_state.get("logged_in"):
 # ✅ Si viene del login con Google y no hay sesión cargada aún
 islogged = validate_get_user()
 if islogged:
-    st.switch_page("pages/ventas.py")
+    st.switch_page("pages/pedidos.py")
 
 logo, login = st.columns(2)
 with logo:

@@ -2,9 +2,6 @@
 import streamlit as st
 #main Db
 pedidosSheet="18JWlO4eq1CXAffEgz6_3KbodPvGhYK-u4Q01fz9BV5U"
-pedidoTable="pedidos"
-detallePedidoTable="detallePedido"
-productoTable="producto"
 title = "Tuqui - Listo para Disfrutar"
 #branding colors 
 aquamarine="#3AA597"

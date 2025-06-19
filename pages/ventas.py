@@ -3,7 +3,7 @@ from navigation import make_sidebar
 import pandas as pd
 from page_utils import apply_page_config
 from modules.data_base import get, add
-
+import modules.tables as db
 # Configuración inicial
 apply_page_config()
 
@@ -23,14 +23,11 @@ if "productos_cliente" not in st.session_state:
     st.session_state.productos_cliente = []
 
 st.title("📦 Ventas")
-tabla_ventas = "ventas"
-tabla_detalle = "detalleVenta"
-productoTable = "producto"
-formaPagoTabla = "formaPago"
 
-productos_data = get(productoTable)
-forma_pago = get(formaPagoTabla)
 
+productos_data = get(db.productoTable)
+forma_pago = get(db.formaPagoTabla)
+clientes = get(db.clientesTable)
 if productos_data:
     productos_df = pd.DataFrame(productos_data)
     if not productos_df.empty and "nombre" in productos_df.columns:
@@ -86,18 +83,24 @@ else:
                         st.rerun()
 
             st.markdown(f"### 💵 Total del pedido: ${total_general:.2f}")
-
-            forma_pago_opciones = [fp["formaPago"] for fp in forma_pago]
-            forma_pago_seleccionada = st.selectbox("Forma de pago", forma_pago_opciones, key="forma_pago_actual", index=1)
-            forma_pago_id = [fp["id"] for fp in forma_pago if fp["formaPago"] == forma_pago_seleccionada][0]
-
+            formPago, clientDropdown = st.columns([3,3])
+            with formPago:
+                forma_pago_opciones = [fp["formaPago"] for fp in forma_pago]
+                forma_pago_seleccionada = st.selectbox("Forma de pago", forma_pago_opciones, key="forma_pago_actual", index=1)
+                forma_pago_id = [fp["id"] for fp in forma_pago if fp["formaPago"] == forma_pago_seleccionada][0]
+            with clientDropdown:
+                clientes_opciones = [fp["nombre"] for fp in clientes]
+                clientes_seleccionada = st.selectbox("Cliente", clientes_opciones, key="cliente_actual", index=1)
+                clientes_id = [fp["id"] for fp in clientes if fp["nombre"] == clientes_seleccionada][0]
             if st.button("💾 Guardar pedido"):
                 # 1. Guardar en tabla VENTAS
                 venta_data = {
                     "formaPago": forma_pago_id,
-                    "total": total_general
+                    "total": total_general,
+                    "cliente":clientes_id
+                    
                 }
-                venta_id = add(tabla_ventas, venta_data)
+                venta_id = add(db.ventasTable, venta_data)
                 if venta_id:
                     for p in st.session_state.productos_cliente:
                         detalle_data = {
@@ -106,7 +109,7 @@ else:
                             "cantidad": p["cantidad"],
                             "subtotal": p["subtotal"]
                         }
-                        add(tabla_detalle, detalle_data)
+                        add(db.detalleVentaTable, detalle_data)
 
                     st.toast("✅ Pedido guardado con éxito", icon="💾")
                     st.session_state.productos_cliente = []

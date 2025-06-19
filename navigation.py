@@ -16,12 +16,12 @@ def make_sidebar():
         """,
         unsafe_allow_html=True
     )
-        st.title("Menu")
         st.write(f"Hola {st.session_state.username}!")
         st.write("")
         st.write("")
 
         if st.session_state.get("logged_in", False):
+            st.page_link("pages/pedidos.py", label="Pedidos")
             st.page_link("pages/ventas.py", label="Venta")
             st.page_link("pages/productos.py", label="Productos")
             st.page_link("pages/historicoVentas.py", label="Historico")

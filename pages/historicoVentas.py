@@ -3,7 +3,7 @@ from navigation import make_sidebar
 from page_utils import apply_page_config
 import pandas as pd
 from modules.data_base import get
-
+import modules.tables as db
 # Configuración inicial
 st.session_state["current_page"] = "historico"
 apply_page_config()
@@ -16,20 +16,17 @@ if "logged_in" not in st.session_state or not st.session_state.logged_in:
 else:
     make_sidebar()
 
-tabla = "ventas"
-productoTable = "producto"
-formaPagoTabla = "formaPago"
-detalleVentaTabla = "detalleVenta"
 st.title("📋 Histórico Ventas")
 
 # Carga de datos
-df_ventas = pd.DataFrame(get(tabla))
-df_detalle = pd.DataFrame(get(detalleVentaTabla))
-productos_data = get(productoTable)
+df_ventas = pd.DataFrame(get(db.ventasTable))
+df_detalle = pd.DataFrame(get(db.detalleVentaTable))
+productos_data = get(db.productoTable)
 productos = pd.DataFrame(productos_data)
-formas_pago_data = get(formaPagoTabla)
+formas_pago_data = get(db.formaPagoTabla)
 formas_pago = pd.DataFrame(formas_pago_data)
-
+cliente_data = get(db.clientesTable)
+clientes = pd.DataFrame(cliente_data)
 filtros, refresh = st.columns([3, 1])
 with refresh:
     st.text('')
@@ -52,7 +49,18 @@ if not df_ventas.empty:
             suffixes=('', '_forma_pago')
         )
         df.rename(columns={'formaPago_forma_pago': 'Forma de Pago'}, inplace=True)
-
+    
+    
+    if not clientes.empty and 'id' in clientes and 'nombre' in clientes and 'cliente' in df:
+        df = df.merge(
+            clientes[['id', 'nombre']],
+            left_on='cliente',       # Esta columna tiene el ID del cliente
+            right_on='id',           # Esta columna en `clientes` también es el ID
+            how='left',
+            suffixes=('', '_cliente')
+        )
+        # Renombrar la columna 'nombre' agregada del merge para claridad
+        df.rename(columns={'nombre': 'Cliente'}, inplace=True)
 
     # Procesar detalle
     if not df_detalle.empty and not productos.empty:
@@ -89,7 +97,8 @@ if not df_ventas.empty:
             "Fecha",
             "Detalle Venta",
             "Forma de Pago",
-            "total"
+            "total",
+            "Cliente" 
         ]
         columnas_presentes = [col for col in columnas_a_mostrar if col in df.columns]
         tabla_mostrar = df[columnas_presentes]
