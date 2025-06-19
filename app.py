@@ -1,10 +1,11 @@
 import streamlit as st
-from modules.data_base import getEqual
-from modules.session_manager import load_user, validate_get_user
+from modules.session_manager import validate_get_user
 
 st.set_page_config(page_title="Inicio", page_icon="🧠", layout="centered")
 st.session_state["current_page"] = "streamlit_app"
-
+import os
+if os.environ.get("STREAMLIT_SERVER_REQUEST_URI", "") == "/menu":
+    st.stop() 
 # ✅ Si ya está logueado por cualquier medio, redirige
 if st.session_state.get("logged_in"):
     st.switch_page("pages/ventas.py")
