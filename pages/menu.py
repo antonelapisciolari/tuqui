@@ -2,7 +2,7 @@ import streamlit as st
 from modules.data_base import get
 import modules.tables as db
 
-st.set_page_config(page_title="Menú Tuqui")
+st.set_page_config(page_title="Menú Tuqui", page_icon="images/favicon.ico")
 st.title("📋 Menú - Tuqui")
 
 menu_items = get(db.productoTable)
@@ -22,7 +22,8 @@ with tab1:
                 st.image(item["imagen"], width=100)
             with col2:
                 st.markdown(f"**{item['nombre']}** - ${item['precio']}")
-
+               
+        st.divider()
 with tab2:
     for item in bebida:
             col1, col2 = st.columns([1, 4])
@@ -30,7 +31,7 @@ with tab2:
                 st.image(item["imagen"], width=100)
             with col2:
                 st.markdown(f"**{item['nombre']}** - ${item['precio']}")
-st.divider()
+
 col1, col2  =st.columns(2)
 with col1:
     st.write("Sueca 78 - Ruzafa - Valencia")
